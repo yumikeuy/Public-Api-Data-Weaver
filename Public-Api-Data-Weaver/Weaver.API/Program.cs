@@ -1,9 +1,11 @@
-
 using System;
-using Infrastructure.Data;
+using Weaver.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Weaver.Services.Interfaces.Services;
+using Weaver.Services.Services;
+using AutoMapper;
 
-namespace API
+namespace Weaver.API
 {
     public class Program
     {
@@ -16,13 +18,26 @@ namespace API
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
+            builder.Services.AddHttpClient<IFruitSyncService, FruitSyncService>(client =>
+            {
+                client.BaseAddress = new Uri("https://www.fruityvice.com/api/");
+            });
+
+            builder.Services.AddScoped<IFruitTransformator, FruitTransformator>();
+
+            builder.Services.AddAutoMapper(cfg => {
+                cfg.AddProfile<MappingProfile>();
+            });
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            
+        
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
