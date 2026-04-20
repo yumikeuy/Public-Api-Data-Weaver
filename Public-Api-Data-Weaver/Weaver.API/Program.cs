@@ -23,7 +23,7 @@ namespace Weaver.API
 
             builder.Services.AddHttpClient<IFruitSyncService, FruitSyncService>(client =>
             {
-                client.BaseAddress = new Uri("https://www.fruityvice.com/api/");
+                client.BaseAddress = new Uri(builder.Configuration.GetSection("ExternalAPIs")["Fruityvice"]!);
             });
 
 

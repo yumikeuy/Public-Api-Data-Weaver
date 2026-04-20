@@ -39,17 +39,20 @@ namespace Weaver.Services.Services
 
             fruits.ForEach(f => _transformator.Transformate(f));
 
+            var counter = 0;
+
             foreach (var fruit in fruits)
             {
-                var exists = _context.Fruits.Any(f => f.Id == fruit.Id);
+                var exists = _context.Fruits.Any(f => f.Name == fruit.Name);
                 if (!exists)
-                { 
+                {
+                    counter++;
                     _context.Fruits.Add(fruit);
                 }
             }
 
             await _context.SaveChangesAsync();
-            return fruits.Count;
+            return counter;
         }
     }
 }

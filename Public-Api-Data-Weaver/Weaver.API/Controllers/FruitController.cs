@@ -105,7 +105,14 @@ namespace Weaver.API.Controllers
         public async Task<IActionResult> Sync()
         {
             var count = await _fruitSyncService.SyncFruitsAsync();
-            return Ok(new { Message = $"Successfully synced {count} new fruits." });
+            if(count == 0)
+            {
+                return Ok(new { Message = $"Nothing to sync." });
+            }
+            else
+            {
+                return Ok(new { Message = $"Successfully synced {count} new fruits." });
+            }
         }
     }
 }
