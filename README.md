@@ -50,7 +50,7 @@ The API is organized into several key functional areas. To ensure a smooth revie
 5. Advanced Filtering.
    These endpoints demonstrate the ability to query the database based on the results of the transformation logic:
 
-   GET `/api/fruits/fitness/{category}`: Filters fruits by their fitness tags (e.g., KetoFriendly, ProteinBoost, SugarBoom). It uses optimized string-pattern          matching to find tags within the serialized category list.
+   GET `/api/fruits/fitness/{category}`: Filters fruits by their fitness tags (e.g., Keto-Friendly, Protein Boost, Sugar Boom). It uses optimized string-pattern          matching to find tags within the serialized category list.
 
    GET `/api/fruits/vitamins/{vitamin}`: Allows searching for fruits that are particularly high in a specific vitamin (e.g., A, C, K) by querying the computed         vitamin markers.
 
