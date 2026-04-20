@@ -32,6 +32,31 @@ Aplikacja została w pełni skonteneryzowana, co eliminuje potrzebę ręcznej ko
 5.  Po poprawnym uruchomieniu kontenerów, interfejs Swagger będzie dostępny pod adresem:
     `http://localhost:8080/swagger/index.html`
 
+## API Overview & Usage
+The API is organized into several key functional areas. To ensure a smooth review process, the endpoints are designed to handle empty states gracefully.
+
+1.  Data Ingestion.
+
+      POST `/api/fruits/sync`: This is the entry point for the application's data. It fetches raw data from the external API, runs it through the Transformation          Engine (applying the Chain of Responsibility logic), and persists the results.
+
+      Note: I designed this as a manual trigger so you can observe the database population in real-time. It is idempotent—syncing, multiple times will not create         duplicate data or cause errors.
+
+3. Data Retrieval.
+
+   GET `/api/fruits`: Returns a list of all processed fruits, including their nutritional information.
+
+   GET `/api/fruits/{id}`: Fetches detailed information for a specific fruit by its unique identifier.
+
+5. Advanced Filtering.
+   These endpoints demonstrate the ability to query the database based on the results of the transformation logic:
+
+   GET `/api/fruits/fitness/{category}`: Filters fruits by their fitness tags (e.g., KetoFriendly, ProteinBoost, SugarBoom). It uses optimized string-pattern          matching to find tags within the serialized category list.
+
+   GET `/api/fruits/vitamins/{vitamin}`: Allows searching for fruits that are particularly high in a specific vitamin (e.g., A, C, K) by querying the computed         vitamin markers.
+
+## Testing & Quality Assurance
+To ensure the reliability of the core business logic, I implemented a suite of unit tests focusing on the Chain of Responsibility pattern used for fruit classification (KetoFriendly, ProteinBoost, and SugarBoom). These tests verify that each link in the chain correctly evaluates nutritional criteria and appropriately modifies the fruit's metadata. While the current test coverage is focused on the most critical transformation logic to keep the project concise, the architecture is fully prepared for expanded test suites using the AAA (Arrange-Act-Assert) pattern and NSubstitute for dependency isolation.
+
 ## Konfiguracja i bezpieczeństwo
 W pliku docker-compose.yml zostały zawarte domyślne dane uwierzytelniające (hasła i loginy do bazy danych). 
 
