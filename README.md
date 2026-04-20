@@ -26,8 +26,10 @@ Aplikacja została w pełni skonteneryzowana, co eliminuje potrzebę ręcznej ko
 1.  Upewnij się, że masz zainstalowany program Docker Desktop.
 2.  Otwórz terminal w głównym folderze projektu (tam, gdzie znajduje się plik docker-compose.yml).
 3.  Uruchom komendę:
-    `docker-compose up`
-4.  Po poprawnym uruchomieniu kontenerów, interfejs Swagger będzie dostępny pod adresem:
+  ```
+   docker-compose up
+  ```
+5.  Po poprawnym uruchomieniu kontenerów, interfejs Swagger będzie dostępny pod adresem:
     `http://localhost:8080/swagger/index.html`
 
 ## Konfiguracja i bezpieczeństwo
