@@ -13,7 +13,7 @@ namespace Weaver.Models.Entities
         public string Family { get; set; } = string.Empty;
         public string Order { get; set; } = string.Empty;
         public Nutritions Nutritions { get; set; } = null!;
-        public string FitnessCategory { get; set; } = FitnessCategories.None;
+        public HashSet<string> FitnessCategories { get; set; } = [];
         public HashSet<char> HighVitamins { get; set; } = [];
         public double ProteinPerCalorie { get; set; }
     }

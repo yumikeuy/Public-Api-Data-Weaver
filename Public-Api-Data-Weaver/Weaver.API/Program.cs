@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Weaver.Services.Interfaces.Services;
 using Weaver.Services.Services;
 using AutoMapper;
+using Weaver.Services.Services.Extensions;
 
 namespace Weaver.API
 {
@@ -18,12 +19,13 @@ namespace Weaver.API
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
+            builder.Services.AddBusinessServices();
+
             builder.Services.AddHttpClient<IFruitSyncService, FruitSyncService>(client =>
             {
                 client.BaseAddress = new Uri("https://www.fruityvice.com/api/");
             });
 
-            builder.Services.AddScoped<IFruitTransformator, FruitTransformator>();
 
             builder.Services.AddAutoMapper(cfg => {
                 cfg.AddProfile<MappingProfile>();

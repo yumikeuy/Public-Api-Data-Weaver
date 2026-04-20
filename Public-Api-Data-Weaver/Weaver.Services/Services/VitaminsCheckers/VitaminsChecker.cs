@@ -3,24 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Weaver.Models.Entities;
 using Weaver.Services.DTOs;
+using Weaver.Services.Interfaces.Services;
 
 namespace Weaver.Services.Services.VitaminsCheckers
 {
-    public abstract class VitaminsChecker
+    public class VitaminsChecker(char vitamin, HashSet<string> genuses) : IVitaminsChecker
     {
-        protected VitaminsChecker? next;
+        protected VitaminsChecker? _next;
         public void SetNext(VitaminsChecker vitaminsChecker)
         {
-            if (next is null)
-                next = vitaminsChecker;
+            if (_next is null)
+            {
+                _next = vitaminsChecker;
+            }
             else
-                next.SetNext(vitaminsChecker);
+            {
+                _next.SetNext(vitaminsChecker);
+            }
+                
         }
 
-        public virtual ICollection<char> CheckForVitamins(ExternalFruitDto fruitDto)
+        public void CheckForVitamins(Fruit fruit)
         {
-            return next?.CheckForVitamins(fruitDto) ?? [];
+            if (fruit is null) return;
+
+            if (genuses.Contains(fruit.Genus))
+            {
+                fruit.HighVitamins.Add(vitamin);
+            }
+
+            _next?.CheckForVitamins(fruit);
         }
     }
 }

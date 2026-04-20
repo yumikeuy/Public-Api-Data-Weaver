@@ -11,6 +11,5 @@ namespace Weaver.Models.Entities
         public static string SugarBoom { get; set; } = "Sugar Boom";
         public static string ProteinBoost { get; set; } = "Protein Boost";
         public static string KetoFriendly { get; set; } = "Keto-Friendly";
-        public static string None { get; set; } = "None";
     }
 }

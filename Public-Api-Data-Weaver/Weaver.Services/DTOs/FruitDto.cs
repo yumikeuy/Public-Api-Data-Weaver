@@ -15,7 +15,8 @@ namespace Weaver.API.DTOs
         public string Family { get; set; } = null!;
         public string Order { get; set; } = null!;
         public double ProteinPerCalorie { get; set; }
-        public string FitnessCategory { get; set; } = null!;
+        public HashSet<string> FitnessCategories { get; set; } = null!;
+        public HashSet<char> HighVitamins { get; set; } = [];
         public NutritionsDto Nutritions { get; set; } = null!;
     }
 }

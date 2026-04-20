@@ -5,6 +5,7 @@ using Weaver.Infrastructure.Data;
 using Weaver.Services.Interfaces.Services;
 using Weaver.API.DTOs;
 using AutoMapper;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace Weaver.API.Controllers
 {
@@ -51,9 +52,48 @@ namespace Weaver.API.Controllers
         [HttpGet("fitness/{category}")]
         public async Task<ActionResult<IEnumerable<FruitDto>>> GetFruitsByCategory(string category)
         {
-            var fruits = await _context.Fruits
-                .Where(f => f.FitnessCategory == category)
+            var pattern = $"%,{category},%";
+
+            var matchingIds = await _context.Fruits
+                .FromSqlInterpolated($"SELECT Id FROM Fruits WHERE ',' + FitnessCategories + ',' LIKE {pattern}")
+                .Select(f => f.Id)
                 .ToListAsync();
+
+            var fruits = await _context.Fruits
+                .Include(f => f.Nutritions)
+                .Where(f => matchingIds.Contains(f.Id))
+                .ToListAsync();
+
+            if (fruits.Count == 0)
+            {
+                return NotFound(new { Message = $"Fruits in category {category} not found." });
+            }
+
+            var fruitsDto = fruits?.Select(f => _mapper.Map<FruitDto>(f));
+
+            return Ok(fruitsDto);
+
+        }
+
+        [HttpGet("vitamins/{vitamin}")]
+        public async Task<ActionResult<IEnumerable<FruitDto>>> GetFruitsByCategory(char vitamin)
+        {
+            var pattern = $"%{vitamin}%";
+
+            var matchingIds = await _context.Fruits
+                .FromSqlInterpolated($"SELECT Id FROM Fruits WHERE HighVitamins LIKE {pattern}")
+                .Select(f => f.Id)
+                .ToListAsync();
+
+            var fruits = await _context.Fruits
+                .Include(f => f.Nutritions)
+                .Where(f => matchingIds.Contains(f.Id))
+                .ToListAsync();
+
+            if (fruits.Count == 0)
+            {
+                return NotFound(new { Message = $"Fruits with high vitamin {vitamin} not found." });
+            }
 
             var fruitsDto = fruits?.Select(f => _mapper.Map<FruitDto>(f));
 

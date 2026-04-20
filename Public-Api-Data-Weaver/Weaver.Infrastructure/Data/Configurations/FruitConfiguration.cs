@@ -29,14 +29,30 @@ namespace Weaver.Infrastructure.Data.Configurations
             );
 
             var highVitaminsComparer = new ValueComparer<HashSet<char>>(
-                (c1, c2) => c1 != null && c2 != null && c1.SetEquals(c2),
-                c => c.Aggregate(0, (a, v) => a ^ v.GetHashCode()),
-                c => new HashSet<char>(c)
-            ); 
+                (v1, v2) => v1 != null && v2 != null && v1.SetEquals(v2),
+                v => v.Aggregate(0, (a, v) => a ^ v.GetHashCode()),
+                v => new HashSet<char>(v)
+            );
 
             builder.Property(f => f.HighVitamins)
                 .HasConversion(highVitaminsConverter)
                 .Metadata.SetValueComparer(highVitaminsComparer);
+
+            var fitnessCategoryConverter = new ValueConverter<HashSet<string>, string>(
+                v => string.Join(',', v),
+                v => string.IsNullOrEmpty(v) ? new HashSet<string>() :
+                v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToHashSet()
+            );
+
+            var fitnessCategoryComparer = new ValueComparer<HashSet<string>>(
+                (fc1, fc2) => fc1!.SetEquals(fc2!),
+                fc => fc.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                fc => fc.ToHashSet()
+            );
+
+            builder.Property(f => f.FitnessCategories)
+                .HasConversion(fitnessCategoryConverter)
+                .Metadata.SetValueComparer(fitnessCategoryComparer);
 
             builder.Property(f => f.Name)
                 .IsRequired()
@@ -52,9 +68,6 @@ namespace Weaver.Infrastructure.Data.Configurations
 
             builder.Property(f => f.Family)
                 .IsRequired()
-                .HasMaxLength(100);
-
-            builder.Property(f => f.FitnessCategory)
                 .HasMaxLength(100);
 
             builder.Property(f => f.ProteinPerCalorie)
