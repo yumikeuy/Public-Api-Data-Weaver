@@ -60,16 +60,31 @@ namespace Weaver.API
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                try
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                var context = services.GetRequiredService<AppDbContext>();
+
+                int retries = 5;
+                while (retries > 0)
                 {
-                    var context = services.GetRequiredService<AppDbContext>();
-                    Thread.Sleep(10000);
-                    context.Database.Migrate();
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occured when tried to migrate.");
+                    try
+                    {
+                        logger.LogInformation("Attempting to migrate database... (Retries left: {Retries})", retries);
+                        context.Database.Migrate();
+                        logger.LogInformation("Database migration successful.");
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        retries--;
+                        if (retries == 0)
+                        {
+                            logger.LogCritical(ex, "Could not migrate database after multiple attempts.");
+                            throw;
+                        }
+
+                        logger.LogWarning("Database not ready yet. Retrying in 2 seconds...");
+                        Thread.Sleep(2000);
+                    }
                 }
             }
 
