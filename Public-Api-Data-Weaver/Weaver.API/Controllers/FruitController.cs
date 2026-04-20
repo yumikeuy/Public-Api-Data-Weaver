@@ -37,7 +37,10 @@ namespace Weaver.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<FruitDto>> GetFruit(Guid id)
         {
-            var fruit = await _context.Fruits.FindAsync(id);
+            var fruit = await _context.Fruits
+                .Include(f => f.Nutritions)
+                .Where(f => f.Id == id)
+                .FirstAsync();
 
             if (fruit == null)
             {
