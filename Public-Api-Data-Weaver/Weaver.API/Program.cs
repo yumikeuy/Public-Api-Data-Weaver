@@ -63,7 +63,7 @@ namespace Weaver.API
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 var context = services.GetRequiredService<AppDbContext>();
 
-                int retries = 5;
+                int retries = 10;
                 while (retries > 0)
                 {
                     try
