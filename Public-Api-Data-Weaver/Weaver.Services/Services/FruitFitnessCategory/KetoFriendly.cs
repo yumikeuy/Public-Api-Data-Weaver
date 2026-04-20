@@ -7,7 +7,7 @@ using Weaver.Models.Entities;
 
 namespace Weaver.Services.Services.FruitFitnessCategory
 {
-    public class KetoFriendly : FruitFitnessCategorySetter
+    internal class KetoFriendly : FruitFitnessCategorySetter
     {
         private const double carbsBound = 10;
         public override void SetCategory(Fruit fruit)

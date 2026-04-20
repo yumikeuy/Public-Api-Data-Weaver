@@ -7,7 +7,7 @@ using Weaver.Models.Entities;
 
 namespace Weaver.Services.Services.FruitFitnessCategory
 {
-    public class SugarBoom : FruitFitnessCategorySetter
+    internal class SugarBoom : FruitFitnessCategorySetter
     {
         private const double sugarBound = 15;
         private const double caloriesBound = 60;

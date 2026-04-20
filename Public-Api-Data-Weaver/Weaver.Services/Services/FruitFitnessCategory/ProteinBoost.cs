@@ -7,7 +7,7 @@ using Weaver.Models.Entities;
 
 namespace Weaver.Services.Services.FruitFitnessCategory
 {
-    public class ProteinBoost : FruitFitnessCategorySetter
+    internal class ProteinBoost : FruitFitnessCategorySetter
     {
         private const double ppcBound = 0.05;
         private const double proteinBound = 4;

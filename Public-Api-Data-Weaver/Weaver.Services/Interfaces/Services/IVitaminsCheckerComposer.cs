@@ -7,8 +7,8 @@ using Weaver.Models.Entities;
 
 namespace Weaver.Services.Interfaces.Services
 {
-    public interface IVitaminsCheckerComposer
+    internal interface IVitaminsCheckerComposer
     {
-        public void Check(Fruit fruit);
+        void Check(Fruit fruit);
     }
 }

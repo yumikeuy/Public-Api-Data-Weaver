@@ -8,7 +8,7 @@ using Weaver.Services.Interfaces.Services;
 
 namespace Weaver.Services.Services.FruitFitnessCategory
 {
-    public class FitnessCategoryComposer : IFruitFitnessCategoryCheckerComposer
+    internal class FitnessCategoryComposer : IFruitFitnessCategoryCheckerComposer
     {
         private readonly IFruitFitnessCategoryChecker _checker;
 

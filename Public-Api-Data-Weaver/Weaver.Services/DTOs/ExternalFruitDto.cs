@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Weaver.Services.DTOs
 {
-    public class ExternalFruitDto
+    internal class ExternalFruitDto
     {
         public int Id { get; set; }
         public string Genus { get; set; } = null!;

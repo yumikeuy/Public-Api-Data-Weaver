@@ -9,7 +9,7 @@ using Weaver.Services.Services.VitaminsCheckers;
 
 namespace Weaver.Services.Services.FruitFitnessCategory
 {
-    public abstract class FruitFitnessCategorySetter : IFruitFitnessCategoryChecker
+    internal abstract class FruitFitnessCategorySetter : IFruitFitnessCategoryChecker
     {
         protected IFruitFitnessCategoryChecker? _next;
 

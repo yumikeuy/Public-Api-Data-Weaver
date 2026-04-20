@@ -8,7 +8,7 @@ using Weaver.Services.Interfaces.Services;
 
 namespace Weaver.Services.Services.VitaminsCheckers
 {
-    public class DefaultVitaminsCheckerComposer : IVitaminsCheckerComposer
+    internal class DefaultVitaminsCheckerComposer : IVitaminsCheckerComposer
     {
         private IVitaminsChecker _vitaminsChecker;
 

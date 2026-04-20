@@ -8,9 +8,9 @@ using Weaver.Services.Services.VitaminsCheckers;
 
 namespace Weaver.Services.Interfaces.Services
 {
-    public interface IVitaminsChecker
+    internal interface IVitaminsChecker
     {
-        public void SetNext(VitaminsChecker vitaminsChecker);
-        public void CheckForVitamins(Fruit fruit);
+        void SetNext(VitaminsChecker vitaminsChecker);
+        void CheckForVitamins(Fruit fruit);
     }
 }

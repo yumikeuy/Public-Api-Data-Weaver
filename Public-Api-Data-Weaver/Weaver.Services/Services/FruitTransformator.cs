@@ -9,7 +9,7 @@ using Weaver.Services.Interfaces.Services;
 
 namespace Weaver.Services.Services
 {
-    public class FruitTransformator : IFruitTransformator
+    internal class FruitTransformator : IFruitTransformator
     {
         private readonly IVitaminsCheckerComposer _vitaminsCheckerComposer;
         private readonly IFruitFitnessCategoryCheckerComposer _fitnessCategoryComposer;

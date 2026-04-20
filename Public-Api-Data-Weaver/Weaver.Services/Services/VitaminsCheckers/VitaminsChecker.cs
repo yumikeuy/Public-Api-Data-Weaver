@@ -9,7 +9,7 @@ using Weaver.Services.Interfaces.Services;
 
 namespace Weaver.Services.Services.VitaminsCheckers
 {
-    public class VitaminsChecker(char vitamin, HashSet<string> genuses) : IVitaminsChecker
+    internal class VitaminsChecker(char vitamin, HashSet<string> genuses) : IVitaminsChecker
     {
         protected VitaminsChecker? _next;
         public void SetNext(VitaminsChecker vitaminsChecker)

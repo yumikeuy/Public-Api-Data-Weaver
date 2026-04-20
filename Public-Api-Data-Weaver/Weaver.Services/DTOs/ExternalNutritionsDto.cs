@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Weaver.Services.DTOs
 {
-    public class ExternalNutritionsDto
+    internal class ExternalNutritionsDto
     {
         public double Carbohydrates { get; set; }
         public double Protein { get; set; }
