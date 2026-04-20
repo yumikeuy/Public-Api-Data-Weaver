@@ -1,0 +1,25 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      # WARNING: Using hardcoded password for recruitment purposes only.
+      # In production, use Docker Secrets or Environment Variables from a secure vault.
+      - MSSQL_SA_PASSWORD=XLoXWHgx6foDw1C0
+    ports:
+      - "1433:1433"
+
+  api:
+    build:
+      context: .
+      dockerfile: Weaver.API/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      # WARNING: Using hardcoded password for recruitment purposes only.
+      # In production, use Docker Secrets or Environment Variables from a secure vault.
+      - ConnectionStrings__DefaultConnection=Server=db;Database=FruitWeaverDb;User Id=sa;Password=XLoXWHgx6foDw1C0;TrustServerCertificate=True
