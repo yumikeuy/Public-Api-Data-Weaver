@@ -8,6 +8,6 @@ namespace Weaver.Services.Interfaces.Services
 {
     public interface IFruitSyncService
     {
-        Task<int> SyncFruitsAsync();
+        Task<int> SyncFruitsAsync(CancellationToken ct);
     }
 }

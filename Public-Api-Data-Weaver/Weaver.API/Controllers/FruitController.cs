@@ -25,9 +25,9 @@ namespace Weaver.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FruitDto>>> GetFruits()
+        public async Task<ActionResult<IEnumerable<FruitDto>>> GetFruits(CancellationToken ct)
         {
-            var fruits = await _context.Fruits.Include(f => f.Nutritions).ToListAsync();
+            var fruits = await _context.Fruits.Include(f => f.Nutritions).ToListAsync(ct);
 
             var fruitsDto = fruits?.Select(f => _mapper.Map<FruitDto>(f));
 
@@ -35,12 +35,12 @@ namespace Weaver.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<FruitDto>> GetFruit(Guid id)
+        public async Task<ActionResult<FruitDto>> GetFruit(Guid id, CancellationToken ct)
         {
             var fruit = await _context.Fruits
                 .Include(f => f.Nutritions)
                 .Where(f => f.Id == id)
-                .FirstAsync();
+                .FirstAsync(ct);
 
             if (fruit == null)
             {
@@ -53,19 +53,19 @@ namespace Weaver.API.Controllers
         }
 
         [HttpGet("fitness/{category}")]
-        public async Task<ActionResult<IEnumerable<FruitDto>>> GetFruitsByCategory(string category)
+        public async Task<ActionResult<IEnumerable<FruitDto>>> GetFruitsByCategory(string category, CancellationToken ct)
         {
             var pattern = $"%,{category},%";
 
             var matchingIds = await _context.Fruits
                 .FromSqlInterpolated($"SELECT Id FROM Fruits WHERE ',' + FitnessCategories + ',' LIKE {pattern}")
                 .Select(f => f.Id)
-                .ToListAsync();
+                .ToListAsync(ct);
 
             var fruits = await _context.Fruits
                 .Include(f => f.Nutritions)
                 .Where(f => matchingIds.Contains(f.Id))
-                .ToListAsync();
+                .ToListAsync(ct);
 
             if (fruits.Count == 0)
             {
@@ -79,19 +79,19 @@ namespace Weaver.API.Controllers
         }
 
         [HttpGet("vitamins/{vitamin}")]
-        public async Task<ActionResult<IEnumerable<FruitDto>>> GetFruitsByCategory(char vitamin)
+        public async Task<ActionResult<IEnumerable<FruitDto>>> GetFruitsByCategory(char vitamin, CancellationToken ct)
         {
             var pattern = $"%{vitamin}%";
 
             var matchingIds = await _context.Fruits
                 .FromSqlInterpolated($"SELECT Id FROM Fruits WHERE HighVitamins LIKE {pattern}")
                 .Select(f => f.Id)
-                .ToListAsync();
+                .ToListAsync(ct);
 
             var fruits = await _context.Fruits
                 .Include(f => f.Nutritions)
                 .Where(f => matchingIds.Contains(f.Id))
-                .ToListAsync();
+                .ToListAsync(ct);
 
             if (fruits.Count == 0)
             {
@@ -105,9 +105,9 @@ namespace Weaver.API.Controllers
         }
 
         [HttpPost("sync")]
-        public async Task<IActionResult> Sync()
+        public async Task<IActionResult> Sync(CancellationToken ct)
         {
-            var count = await _fruitSyncService.SyncFruitsAsync();
+            var count = await _fruitSyncService.SyncFruitsAsync(ct);
             if(count == 0)
             {
                 return Ok(new { Message = $"Nothing to sync." });

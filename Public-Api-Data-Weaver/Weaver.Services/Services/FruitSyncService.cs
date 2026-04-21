@@ -28,21 +28,21 @@ namespace Weaver.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<int> SyncFruitsAsync()
+        public async Task<int> SyncFruitsAsync(CancellationToken ct)
         {
             var url = "fruit/all";
-            var fruitsDto = await _httpClient.GetFromJsonAsync<List<ExternalFruitDto>>(url);
+            var fruitsDto = await _httpClient.GetFromJsonAsync<List<ExternalFruitDto>>(url, ct);
 
             if (fruitsDto == null) return 0;
 
-            var fruits = fruitsDto.Select(dto => _mapper.Map<Fruit>(dto)).ToList();
-
-            fruits.ForEach(f => _transformator.Transformate(f));
+            var fruits = fruitsDto.Select(dto => _mapper.Map<Fruit>(dto));
 
             var counter = 0;
 
             foreach (var fruit in fruits)
             {
+                _transformator.Transformate(fruit);
+
                 var exists = _context.Fruits.Any(f => f.Name == fruit.Name);
                 if (!exists)
                 {
